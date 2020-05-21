@@ -1,7 +1,6 @@
 import streamlit as st
 import plotly.graph_objects as go
 import textwrap
-from PIL import Image
 
 from Qs import (
     Q,
@@ -24,9 +23,11 @@ from Qs import (
 # Sidebar setup.
 next_rotation_flag = st.sidebar.checkbox(label="q X q' = q'' ", value=True)
 next_rotation_randomized_flag = st.sidebar.checkbox(label="Randomized(q X q' = q'')", value=True)
-permutation_flag = st.sidebar.checkbox(label="permutation: txyz -> tzyx", value=True)
+permutation_flag = st.sidebar.checkbox(label="all permutations", value=True)
+
 dim = st.sidebar.slider(label="Dimensions", min_value=10, max_value=500, value=75)
-time = st.sidebar.slider(label="t", min_value=0.5, max_value=5.0, value=1.0)
+
+time = st.sidebar.slider(label="t", min_value=0.1, max_value=100.0, value=2.3)
 
 show_code = st.sidebar.checkbox("Show code", False)
 
@@ -62,7 +63,7 @@ permutation_data_norm_squares = norm_squareds(permutation_data)
 
 # Main page.
 
-st.title("Rotations by Group Operators")
+st.title("Rotations by Groups")
 
 fig = go.Figure()
 go.Layout()
@@ -111,7 +112,6 @@ if permutation_flag:
         )
     )
 
-
 fig.add_trace(
     go.Scatter3d(
         {"x": [point_1.x], "y": [point_1.y], "z": [point_1.z]},
@@ -131,26 +131,31 @@ if next_rotation_flag or next_rotation_randomized_flag:
         )
     )
     
+# Make it a fixed cube.
+fig.update_layout(
+    scene={
+        'xaxis': {'range': [-4, 4], 'rangemode': 'tozero', 'tickmode': "linear", 'tick0': -4, 'dtick': 1},
+        'yaxis': {'range': [-4, 4], 'rangemode': 'tozero', 'tickmode': "linear", 'tick0': -4, 'dtick': 1},
+        'zaxis': {'range': [-4, 4], 'rangemode': 'tozero', 'tickmode': "linear", 'tick0': -4, 'dtick': 1},
+        'aspectmode': 'cube'},
+    margin={'autoexpand': False},
+    autosize=False,
+    width=600,
+    height=600)
+
 st.write(fig)
 
-st.markdown("### Norm Squared and Squared Values")
+st.markdown("""## Time Slider Fun
 
-table = f"""t² + R² | t²-R² | 2 t x | 2 t y | 2 t z
---- | --- | --- | -- | --
-"""
+I thought the scalar term would be boring to play with. I think of it as time.
+When it is tiny, the q x q' froms a circle. That circle moves over one of the 
+red dots and tries to get closer, even if it has to break up. It forms a 6
+point start that bends and forms a small spiral. Odd, but true numerically.
 
-if next_rotation_flag:
-    means = next_rotation_data_squares.df.mean()
-    square = next_rotation_data_norm_squares.df[0] / dim
-    table += f"""{square["t"]:.2f} | {means["t"]:.2f} | {means["x"]:.2f} | {means["y"]:.2f} | {means["z"]:.2f}\n"""
+A program was written to make this animation, rotations_by_groups_time_lapse.py.
+""")
 
-if next_rotation_randomized_flag:
-    means = next_rotation_randomized_data_squares.df.mean()
-    square = next_rotation_randomized_data_norm_squares.df[0] / dim
-    table += f"""{square["t"]:.2f} | {means["t"]:.2f} | {means["x"]:.2f} | {means["y"]:.2f} | {means["z"]:.2f}"""
-
-st.markdown(f"{table}")
-
+st.image("images/d6k.gif")
 
 def show_file(label: st, file_name: str, code: bool = False):
     """
@@ -179,3 +184,4 @@ def show_file(label: st, file_name: str, code: bool = False):
 if show_code:
     show_file("Streamlit Webapp code", __file__, code=True)
     show_file("Qs.py library code", "Qs.py", code=True)
+    show_file("rotations_by_groups_time_lapse.py", "rotations_by_groups_time_lapse.py", code=True)
