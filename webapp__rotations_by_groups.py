@@ -27,7 +27,7 @@ permutation_flag = st.sidebar.checkbox(label="all permutations", value=True)
 
 dim = st.sidebar.slider(label="Dimensions", min_value=10, max_value=500, value=75)
 
-time = st.sidebar.slider(label="t", min_value=0.1, max_value=100.0, value=2.3)
+time = st.sidebar.slider(label="t", min_value=0.1, max_value=5.0, value=2.3)
 
 show_code = st.sidebar.checkbox("Show code", False)
 
@@ -68,7 +68,7 @@ st.title("Rotations by Groups")
 fig = go.Figure()
 go.Layout()
 POINT_SIZE = 6
-OPACITY = 0.8
+OPACITY = 0.5
 
 if next_rotation_flag:
     fig.add_trace(
@@ -94,7 +94,7 @@ if next_rotation_randomized_flag:
             },
             name="Randomized(q X q') = q''",
             mode="markers",
-            marker=dict(size=POINT_SIZE, opacity=OPACITY, color="pink"),
+            marker=dict(size=POINT_SIZE, opacity=OPACITY, color="green"),
         )
     )
 
@@ -106,9 +106,9 @@ if permutation_flag:
                 "y": permutation_data.df["y"],
                 "z": permutation_data.df["z"],
             },
-            name="txyz -> tzyx",
+            name="txyz -> all permutations",
             mode="markers",
-            marker=dict(size=POINT_SIZE, opacity=OPACITY, color="orange"),
+            marker=dict(size=POINT_SIZE, opacity=OPACITY, color="violet"),
         )
     )
 
@@ -127,7 +127,7 @@ if next_rotation_flag or next_rotation_randomized_flag:
             {"x": [point_2.x], "y": [point_2.y], "z": [point_2.z]},
             name=f"point_2: {point_2.x}, {point_2.y}, {point_2.z}",
             mode="markers",
-            marker=dict(size=POINT_SIZE, opacity=1, color="red"),
+            marker=dict(size=POINT_SIZE, opacity=1, color="orange"),
         )
     )
     
@@ -145,6 +145,17 @@ fig.update_layout(
 
 st.write(fig)
 
+st.markdown("""## Rotations by Group Operations
+
+This app stats with 2 quaternions: one at (t, 1, 2, 3), the other at (t, 3, 2, 1),
+in red and orange respectively. For whatever value of dimension is set, one forms the quaternion 
+product.  The time has to be kept at t while the norm is unaltered. These are 
+the points shown in blue. If the product is randomized, then the sphere with a 
+radius of (1 + 4 + 9)^(1/2) can be covered. The 6 permutations of the points
+are shown.
+
+        """)
+
 st.markdown("""## Time Slider Fun
 
 I thought the scalar term would be boring to play with. I think of it as time.
@@ -156,6 +167,8 @@ A program was written to make this animation, rotations_by_groups_time_lapse.py.
 """)
 
 st.image("images/d6k.gif")
+
+st.image("images/eight_frames.50.png")
 
 def show_file(label: st, file_name: str, code: bool = False):
     """
