@@ -33,7 +33,7 @@ show_code = st.sidebar.checkbox("Show code", False)
 
 # The calculation - make a DataFrame
 point_1 = Q([time, 1, 2, 3])
-point_2 = Q([time, 1, 3, 2])
+point_2 = Q([time, 1, -3, -2])
 
 next_rotation_data = generate_QQs(next_rotation, point_1, point_2, dim=dim)
 next_rotation_randomized_data = generate_QQs(next_rotation_randomized, point_1, point_2, dim=dim)
@@ -158,12 +158,16 @@ are shown.
 
 st.markdown("""## Time Slider Fun
 
-I thought the scalar term would be boring to play with. I think of it as time.
-When it is tiny, the q x q' froms a circle. That circle moves over one of the 
-red dots and tries to get closer, even if it has to break up. It forms a 6
-point start that bends and forms a small spiral. Odd, but true numerically.
+I thought the scalar term would be boring to play with because in the group
+operation, the scalar stays fixed. I think of the scalar as the time part of
+space-time.  When time is tiny, the q x q' forms a circle over the points 1 and
+2.  That circle moves to point 2 in orange and gets closer, even if it has to
+break up. It forms a 6 point star that bends and forms a small spiral. Odd,
+but true numerically.
 
 A program was written to make this animation, rotations_by_groups_time_lapse.py.
+
+All the code is available on [github](https://github.com/dougsweetser/rotations_by_groups.git)
 """)
 
 st.image("images/d6k.gif")

@@ -11,10 +11,6 @@ This process can be repeated over and over, each time generating a new member
 of the group. If one only uses two quaternions as input, q and q', the hollow
 sphere cannot be covered. Only by introducting a random element is it possible.
 
-There is an online webapp here: [https://rotations-by-groups.herokuapp.com](https://rotations-by-groups.herokuapp.com)
-
-The app shows the above expresion done many times over and over. It also has the randomized form.
-
 A characteristic of this group operation is that the scalar does not change.
 One might think that changing it from a small value of 0.1 to 5.0 would be a
 rather dull exercise. The result is actually odd:

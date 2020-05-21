@@ -2,7 +2,7 @@
 """
 Can make animations of rotation group operations.
 
-usage: rotations_by_groups_time_lapse.py [-d DIM] [-t TMIN] [-m TMAX] [-n NFRAMES] [--v1 XYZ1] [--v2 XYZ2] [-o OUTPUT]
+usage: rotations_by_groups_time_lapse.py [-d DIM] [-t TMIN] [-m TMAX] [-n NFRAMES] [--v1 XYZ1] [--v2 XYZ2] [-o OUTPUT] [--rm]
 
 optional arguments:
     -d DIM --dim DIM                Number of dimensions [default: 100]
@@ -10,8 +10,9 @@ optional arguments:
     -m TMAX --tmax TMAX             Maximumm time value [default: 5.0]
     -n NFRAMES --n_frames NFRAMES   Number of frames total [default: 100 ]
     --v1 XYZ1                       point_1 3-vector in quotes [default: 1 2 3]
-    --v2 XYZ2                       point_2 3-vector in quotes [default: 3 2 1]
-    -o OUTPUT --output OUTPUT       output file_name [default: images/out3]
+    --v2 XYZ2                       point_2 3-vector in quotes [default: -1 -3 -2]
+    -o OUTPUT --output OUTPUT       output file_name [default: images/out]
+    --rm                            rm animation files [default: False]
 """
 
 import plotly.graph_objects as go
@@ -47,7 +48,7 @@ for i in range(100, 100 + n_frames):
     fig = go.Figure()
     go.Layout()
     POINT_SIZE = 6
-    OPACITY = 0.8
+    OPACITY = 0.5
     
     camera = dict(
         up=dict(x=0, y=0, z=1),
@@ -95,7 +96,7 @@ for i in range(100, 100 + n_frames):
             {"x": [point_2.x], "y": [point_2.y], "z": [point_2.z]},
             name=f"point_2: {point_2.x}, {point_2.y}, {point_2.z}",
             mode="markers",
-            marker=dict(size=POINT_SIZE, opacity=1, color="red"),
+            marker=dict(size=POINT_SIZE, opacity=1, color="orange"),
         )
     )
     
@@ -107,3 +108,6 @@ for i in range(100, 100 + n_frames):
 command = f"convert {output}.*png {output}.gif;"
 print(f"running: {command}", flush=True)
 os.system(command)
+
+if ARGS["--rm"]:
+    os.system(f"rm {output}.*png")
