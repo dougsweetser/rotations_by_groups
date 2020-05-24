@@ -29,11 +29,20 @@ dim = st.sidebar.slider(label="Dimensions", min_value=10, max_value=500, value=7
 
 time = st.sidebar.slider(label="t", min_value=0.1, max_value=5.0, value=2.3)
 
+reverse_points = st.sidebar.checkbox("Reverse points", False)
 show_code = st.sidebar.checkbox("Show code", False)
 
 # The calculation - make a DataFrame
-point_1 = Q([time, 1, 2, 3])
-point_2 = Q([time, 1, -3, -2])
+p_1 = Q([time, 1, 2, 3])
+p_2 = Q([time, 1, -3, -2])
+
+if reverse_points:
+    point_1 = p_2
+    point_2 = p_1
+
+else:
+    point_1 = p_1
+    point_2 = p_2
 
 next_rotation_data = generate_QQs(next_rotation, point_1, point_2, dim=dim)
 next_rotation_randomized_data = generate_QQs(next_rotation_randomized, point_1, point_2, dim=dim)
